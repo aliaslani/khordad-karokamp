@@ -1,4 +1,6 @@
+import uu
 from django.db import models
+import uuid
 
 
 class Author(models.Model):
@@ -25,6 +27,7 @@ class Category(models.Model):
 
 
 class Book(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=50)
     author = models.ForeignKey(
         "Author", on_delete=models.SET_NULL, null=True, verbose_name="نویسنده"
@@ -32,6 +35,7 @@ class Book(models.Model):
     category = models.ForeignKey("Category", on_delete=models.PROTECT)
     published_day = models.DateField()
     pages = models.PositiveSmallIntegerField(default=0)
+    summary = models.TextField("خلاصه")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
