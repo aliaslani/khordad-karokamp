@@ -36,6 +36,7 @@ class Book(models.Model):
     published_day = models.DateField()
     pages = models.PositiveSmallIntegerField(default=0)
     summary = models.TextField("خلاصه")
+    cover = models.ImageField(upload_to="covers", default="covers/default.jpeg")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

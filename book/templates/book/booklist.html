@@ -1,28 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'book/base.html' %}
+{% block title %} لیست کتاب‌ها {% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        h1 {
-            color: red;
-            text-align: center;
-        }
-    </style>
-</head>
+{% block main %}
+<div class="row mt-2">
+    <div class="col-sm-10">
+        <ul class="list-group">
+            {% for book in books %}
 
-<body>
-    <h1>This is a test Template</h1>
-    <ul>
-        {% for book in books %}
-
-        <li><a href="{% url 'book_detail' id=book.id %}">{{ book.title }} </a></li>
+            <li class="list-group-item d-flex justify-content-between"><a class="text-decoration-none"
+                    href="{% url 'book_detail' id=book.id %}">
+                    {{book.title}} </a> <span>{{ book.author }}</span> </li>
 
 
-        {% endfor %}
-    </ul>
-</body>
+            {% endfor %}
+        </ul>
 
-</html>
+    </div>
+</div>
+
+
+{% endblock %}
