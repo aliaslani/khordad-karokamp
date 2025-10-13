@@ -6,8 +6,8 @@ import uuid
 class Author(models.Model):
     first_name = models.CharField(max_length=50, verbose_name="نام")
     last_name = models.CharField("نام خانوادگی", max_length=50)
-    birthdate = models.DateField(null=True)
-    biography = models.TextField(null=True, blank=True)
+    birthdate = models.DateField(null=True, verbose_name="تاریخ تولد")
+    biography = models.TextField(null=True, blank=True, verbose_name="زندگی‌نامه")
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -39,6 +39,7 @@ class Book(models.Model):
     cover = models.ImageField(upload_to="covers", default="covers/default.jpeg")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_archived = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.title}-{self.author}"

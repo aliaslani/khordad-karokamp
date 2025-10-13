@@ -1,4 +1,6 @@
+from pydoc import describe
 from django import forms
+from book.models import Author, Book
 
 
 class CategoryForm(forms.Form):
@@ -17,8 +19,70 @@ class CategoryForm(forms.Form):
         widget=forms.Textarea(attrs={"class": "form-control mt-2"}),
     )
 
-    def clean_name(self):
+    # def clean_name(self):
+    #     name = self.cleaned_data.get("name")
+    #     if len(name) < 5:
+    #         raise forms.ValidationError(
+    #             "این فیلد نمی تواند کمتر از ۵ کاراکتر داشته باشد"
+    #         )
+    #     return name
+
+    # def clean_description(self):
+    #     d = self.cleaned_data.get("description")
+    #     if len(d) > 10:
+    #         raise forms.ValidationError("خیلی طولانیه")
+
+    #     return d
+
+    def clean(self):
         name = self.cleaned_data.get("name")
-        if len(name) < 5:
-            forms.ValidationError("این فیلد نمی تواند کمتر از ۵ کاراکتر داشته باشد")
-        return name
+        description = self.cleaned_data.get("description")
+
+        if name == description:
+            raise forms.ValidationError("نام با توضیحات نمی تواند یکسان باشد")
+        return self.cleaned_data
+
+
+class AuthorForm(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = ["first_name", "last_name", "birthdate", "biography"]
+
+        widgets = {
+            "first_name": forms.TextInput(attrs={"class": "form-control mt-2"}),
+            "last_name": forms.TextInput(attrs={"class": "form-control mt-2"}),
+            "birthdate": forms.DateInput(attrs={"class": "form-control mt-2"}),
+            "biography": forms.Textarea(attrs={"class": "form-control mt-2"}),
+        }
+
+
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = [
+            "title",
+            "author",
+            "category",
+            "published_day",
+            "pages",
+            "summary",
+            "cover",
+        ]
+
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control mt-2"}),
+            "author": forms.Select(attrs={"class": "form-control mt-2"}),
+            "category": forms.Select(attrs={"class": "form-control mt-2"}),
+            "published_day": forms.DateInput(
+                attrs={"class": "form-control mt-2", "type": "date"}
+            ),
+            "pages": forms.NumberInput(attrs={"class": "form-control mt-2"}),
+            "cover": forms.FileInput(attrs={"class": "form-control mt-2"}),
+            "summary": forms.Textarea(attrs={"class": "form-control mt-2"}),
+        }
+
+    def clean_title(self):
+        title = self.cleaned_data.get("title")
+        if len(title) < 10:
+            raise forms.ValidationError("این فیلد نمی تواند کمتر از ۱۰ کاراکتر باشد")
+        return title

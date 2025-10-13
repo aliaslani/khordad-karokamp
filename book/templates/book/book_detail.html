@@ -2,6 +2,29 @@
 {% block title %} {{ book.title }} {% endblock %}
 
 {% block main %}
+
+<!-- Modal -->
+<div class="modal fade" id="delete_book_modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                آیا مطمئنید که می خواهید کتاب را حذف کنید
+            </div>
+            <div class="modal-footer">
+                <form action="{% url 'delete_book' id=book.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">بله </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">خیر</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="row mt-5">
     <div class="col-sm-4">
         <div class="card">
@@ -13,6 +36,13 @@
             <div class="card-footer d-flex justify-content-between">
                 <small>{{ book.author }}</small>
                 <small>{{ book.published_day }}</small>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-warning" href="{% url 'edit_book' id=book.id %}">ویرایش</a>
+                <a class="btn btn-secondary" href="{% url 'archive_book' id=book.id %}">بایگانی</a>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_book_modal">
+                    حذف
+                </button>
             </div>
         </div>
     </div>
