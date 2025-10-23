@@ -46,10 +46,8 @@ class Book(models.Model):
 
 class Review(models.Model):
     user = models.ForeignKey(
-        "CustomUser",
+        "accounts.CustomUser",
         on_delete=models.CASCADE,
-        related_name="user_reviews",
+        related_name="reviews",
     )
-    book = models.ForeignKey(
-        "Book", on_delete=models.CASCADE, related_name="book_reviews"
-    )
+    book = models.ForeignKey("Book", on_delete=models.CASCADE, related_name="reviews")
